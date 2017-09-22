@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 import "github.com/kniren/gota/dataframe"
 import "github.com/kniren/gota/series"
 
@@ -9,6 +7,14 @@ import "github.com/kniren/gota/series"
 // import _ "github.com/lib/pq"
 
 import pb "proto"
+
+import (
+    // "github.com/golang/protobuf/proto"
+    "net/http"
+    "fmt"
+    // "io/ioutil"
+)
+
 
 // const (
 //   host     = "localhost"
@@ -18,7 +24,7 @@ import pb "proto"
 //   dbname   = "call_me_maybe_development"
 // )
 
-func main() {
+func abc() {
     fmt.Println("hello world")
 
     p := pb.Person{
@@ -57,4 +63,12 @@ func main() {
     fmt.Println(df)
     // fmt.Println(db)
     // fmt.Println(rows)
+}
+
+func main() {
+    http.HandleFunc("/def", func(w http.ResponseWriter, r *http.Request) {
+      fmt.Println("test")
+    })
+
+    http.ListenAndServe(":80", nil)
 }

@@ -1,0 +1,12 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+      - 80:80
+    links:
+      - account
+    command: ["./web"]
+  account:
+    build: .
+    command: ["./account"]
