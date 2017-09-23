@@ -5,14 +5,14 @@ services:
     ports:
       - 80:80
     links:
-      - account
+      # - account
       - event_log
-    command: ["./web"]
-  account:
-    build: .
-    command: ["./account"]
+    entrypoint: ./web
+  # account:
+  #   build: .
+  #   command: ["./account"]
   event_log:
     build: .
-    command: ["./event_log"]
+    entrypoint: ./event_log
     volumes:
        - ./data:/data

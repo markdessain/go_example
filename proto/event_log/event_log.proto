@@ -1,13 +1,10 @@
 syntax = "proto3";
-package events;
 
-message Event {
-  string uuid = 1;
-  string vendor = 2;
-  string version = 3;
-  int64 timestamp = 4;
+package event_log;
+
+service EventLog {
+  rpc LogPageView(PageView) returns (Result);
 }
-
 
 message PageView {
   string uuid = 1;
@@ -16,4 +13,8 @@ message PageView {
   int64 timestamp = 4;
 
   string page_url = 5;
+}
+
+message Result {
+  bool success = 1;
 }
