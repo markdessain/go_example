@@ -9,10 +9,10 @@ import "github.com/kniren/gota/series"
 import pb "proto"
 
 import (
-    // "github.com/golang/protobuf/proto"
+    "github.com/golang/protobuf/proto"
     "net/http"
     "fmt"
-    // "io/ioutil"
+    "io/ioutil"
 )
 
 
@@ -67,8 +67,48 @@ func abc() {
 
 func main() {
     http.HandleFunc("/def", func(w http.ResponseWriter, r *http.Request) {
-      fmt.Println("test")
+      event := pb.Event{}
+
+      data, err := ioutil.ReadAll(r.Body)
+
+      if err != nil {
+          fmt.Println(err)
+      }
+
+      if err := proto.Unmarshal(data, &event); err != nil {
+          fmt.Println(err)
+      }
+
+      fmt.Println(event)
+
+
     })
 
     http.ListenAndServe(":80", nil)
 }
+
+// 
+//
+// func abc() {
+// 	time.Sleep(time.Second)
+// 	time.Sleep(time.Second)
+// 	time.Sleep(time.Second)
+// 	time.Sleep(time.Second)
+// 	fmt.Println("mark")
+//
+// }
+//
+// func check(messages chan string) {
+//
+//   time.Sleep(time.Second)
+//   resp, err := http.Get("http://account/def")
+//
+//   if err != nil {
+//      fmt.Println(err)
+//      return
+//   }
+//
+//   fmt.Println(resp)
+//
+//   messages <- "ping"
+// }

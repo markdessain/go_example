@@ -6,7 +6,13 @@ services:
       - 80:80
     links:
       - account
+      - event_log
     command: ["./web"]
   account:
     build: .
     command: ["./account"]
+  event_log:
+    build: .
+    command: ["./event_log"]
+    volumes:
+       - ./data:/data

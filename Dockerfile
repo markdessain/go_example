@@ -12,8 +12,9 @@ COPY . .
 
 RUN protoc --go_out=plugins=grpc:src/ proto/*.proto
 
-RUN go build -o ./account ./src/account
+# RUN go build -o ./account ./src/account
 RUN go build -o ./web ./src/web
+RUN go build -o ./event_log ./src/event_log
 
 FROM alpine:latest
 #scratch

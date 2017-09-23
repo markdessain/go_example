@@ -1,46 +1,36 @@
 package main
 
 import (
-    // "github.com/golang/protobuf/proto"
     "net/http"
     "fmt"
+     pb "proto"
+    "github.com/golang/protobuf/proto"
+    "bytes"
     "time"
-    // "io/ioutil"
 )
 
 func main() {
-    http.HandleFunc("/abc", func(w http.ResponseWriter, r *http.Request) {
+    http.HandleFunc("/def", func(w http.ResponseWriter, r *http.Request) {
+      event := pb.PageView{
+        Uuid:    "1234-1234-1234",
+        Vendor:  "com.markkdessain",
+        Version: "1-0-0",
+        Timestamp: int64(time.Now().UTC().Unix()),
+        PageUrl: "test",
+      }
 
-      messages := make(chan string)
+      data, err := proto.Marshal(&event)
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
 
-      go check(messages)
-      go check(messages)
-      time.Sleep(time.Second)
-      go check(messages)
-
-      msg := <-messages
-      fmt.Println(msg)
-
-      msg2 := <-messages
-      fmt.Println(msg2)
-
-      fmt.Println("Done")
+      _, err = http.Post("http://event_log/api/log?event_name=PageView", "", bytes.NewBuffer(data))
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
     })
 
     http.ListenAndServe(":80", nil)
-}
-
-func check(messages chan string) {
-
-  time.Sleep(time.Second)
-  resp, err := http.Get("http://account/def")
-
-  if err != nil {
-     fmt.Println(err)
-     return
-  }
-
-  fmt.Println(resp)
-
-  messages <- "ping"
 }
